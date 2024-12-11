@@ -1,25 +1,20 @@
-from collections import Counter
+from collections import deque
 from functools import cache
 
 input = """27 10647 103 9 0 5524 4594227 902936"""
 
 stones = [int(x) for x in input.strip().split()]
 
-count = Counter(stones)
+@cache
+def count(stone, steps):
+    if steps == 0:
+        return 1
+    if stone == 0:
+        return count(1, steps - 1)
+    string = str(stone)
+    length = len(string)
+    if length % 2 == 0:
+        return count(int(string[:length // 2]), steps - 1) + count(int(string[length // 2:]), steps - 1)
+    return count(stone * 2024, steps - 1)
 
-for _ in range(75):
-    ncount = Counter()
-
-    for x in count.keys():
-        c = count[x]
-        if x == 0:
-            ncount[1] += c
-        elif len(str(x)) % 2 == 0:
-            s = str(x)
-            lx, rx = s[:len(s) // 2], s[len(s) // 2:]
-            ncount[int(lx)] += c
-            ncount[int(rx)] += c
-        else:
-            ncount[x * 2024] += c
-    count = ncount
-print(sum(count.values()))
+print(sum(count(stone, 75) for stone in stones))# 
