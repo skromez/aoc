@@ -74,7 +74,6 @@ v>v^<v>>^v^vv^<<v^<^vv^vvv<>>^<><v^<<^<v^<<v<^><>^<<^><>^^^^><>>vv<^v><^^<^<v<>v
 [grid, movements] = input.strip().split('\n\n')
 grid = [list(row) for row in grid.split('\n')]
 movements = [move for move in list(movements) if move != '\n']
-print(movements)
 rows = len(grid)
 cols = len(grid[0])
 
