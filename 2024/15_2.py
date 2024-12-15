@@ -90,7 +90,6 @@ for r in range(rows):
     break
 
 for move in moves:
-    print(move)
     dr = {'^': -1, 'v': 1}.get(move, 0)
     dc = {'<': -1, '>': 1}.get(move, 0)
 
@@ -101,7 +100,7 @@ for move in moves:
         nr = cr + dr
         nc = cc + dc
         if (nr, nc) in targets: continue
-        char = grid[nc][nc]
+        char = grid[nr][nc]
         if char == '#':
             go = False
             break
@@ -111,15 +110,15 @@ for move in moves:
         if char == ']':
             targets.append((nr, nc))
             targets.append((nr, nc - 1))
-        if not go: continue
-        copy = [list(row) for row in grid]
-        grid[r][c] = '.'
-        grid[r + dr][c + dc] = '@'
-        for br, bc in targets[1:]:
-            grid[br][bc] = '.'
-        for br, bc in targets[1:]:
-            grid[br + dr][bc + dc] = copy[br][bc]
-        r += dr
-        c += dc
+    if not go: continue
+    copy = [list(row) for row in grid]
+    grid[r][c] = '.'
+    grid[r + dr][c + dc] = '@'
+    for br, bc in targets[1:]:
+        grid[br][bc] = '.'
+    for br, bc in targets[1:]:
+        grid[br + dr][bc + dc] = copy[br][bc]
+    r += dr
+    c += dc
 
 print(sum(100 * r + c for r in range(rows) for c in range(cols) if grid[r][c] == '['))
