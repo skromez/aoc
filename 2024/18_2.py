@@ -3458,19 +3458,14 @@ coords = [(int(line.split(',')[1]), int(line.split(',')[0]))
 rows = 71
 cols = 71
 
-# nanoseconds = 1024
-# corrupted = coords[:nanoseconds]
-corrupted = coords
-
-grid = [['.' for _ in range(rows)] for _ in range(cols)]
-
-for r, c in corrupted:
-    grid[r][c] = '#'
+def connected(n):
+    grid = [['.' for _ in range(rows)] for _ in range(cols)]
+    for c, r in coords[:n]:
+        grid[r][c] = '#'
 
     q = deque([[0, 0, 0]])
     seen = set()
     dirs = [[-1, 0], [0, 1], [1, 0], [0, -1]]
-    found = False
     while q:
         qlen = len(q)
         for _ in range(qlen):
@@ -3481,14 +3476,20 @@ for r, c in corrupted:
             seen.add((cr, cc))
 
             if cr == rows -1 and cc == cols - 1:
-                found = True
-                break
+                return True
             if grid[cr][cc] == '#': continue
 
             for dr, dc in dirs:
                 q.append([cr + dr, cc + dc, steps + 1])
-    if not found:
-        print(c, r)
-        break
+    return False
 
-print('\n'.join([' '.join(map(str, row)) for row in grid]))
+low = 0
+high = len(coords)
+
+while low < high:
+    mid = (low + high) // 2
+    if connected(mid + 1):
+        low = mid + 1
+    else:
+        high = mid
+print(coords[low][1], coords[low][0])
